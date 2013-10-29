@@ -37,6 +37,8 @@
 #include <security_cdsa_utilities/acl_password.h>
 #include <security_cdsa_utilities/acl_threshold.h>
 
+#include <sys/sysctl.h>
+#include <security_utilities/logging.h>
 
 //
 // SecurityServerAcl is virtual
@@ -87,6 +89,7 @@ void SecurityServerAcl::changeOwner(const AclOwnerPrototype &newOwner,
 void SecurityServerAcl::validate(AclAuthorization auth, const AccessCredentials *cred, Database *db)
 {
     SecurityServerEnvironment env(*this, db);
+	
 	StLock<Mutex> objectSequence(aclSequence);
 	StLock<Mutex> processSequence(Server::process().aclSequence);
     ObjectAcl::validate(auth, cred, &env);
